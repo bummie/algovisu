@@ -13,8 +13,13 @@ public class Main extends JFrame
 	private int windowWidth = 720;
 	private int windowHeight = 480;
 	private long time;
+	private Font textFont;
 
-	private Font textFont = new Font ("Courier New", Font.BOLD, 17);
+	// Colors
+	private Color colBG = new Color(195, 200, 205);
+	private Color colPair = new Color(22, 160, 133);
+	private Color colOdd = new Color(44, 62, 80);
+
 
 
 	private final int ARRAY_SIZE = 150;
@@ -36,6 +41,7 @@ public class Main extends JFrame
 
 	private void init()
 	{
+		textFont = new Font ("Courier New", Font.BOLD, 25);
 		hentTilfeldigeArrayVerdier(ARRAY_SIZE);
 
 		setTitle("Algoritmevisualisering");
@@ -79,7 +85,6 @@ public class Main extends JFrame
 	{
 		if(!isSorted)
 		{
-
 			if(arrayPos >= arrayVerdier.length-1)
 			{
 				arrayPos = 0;
@@ -106,16 +111,18 @@ public class Main extends JFrame
 
 		Graphics bbg = backBuffer.getGraphics();
 
-		bbg.setColor(Color.WHITE);
+		bbg.setColor(colBG);
 		bbg.fillRect(0, 0, windowWidth, windowHeight);
 
 		// Tegn søyler
 		drawGraphs(bbg);
 
 		// Statestikktekst
-		g.setColor(Color.black);
-		g.setFont(textFont);
-		g.drawString("Swaps: " + statSwaps , 100, 100);
+		bbg.setColor(Color.BLACK);
+		bbg.setFont(textFont);
+		bbg.drawString("Swaps: " + statSwaps + " Sorted: " + isSorted , 0, 20);
+		bbg.drawString("Size: " + arrayVerdier.length + " Swap: " + swappedInt , 0, 40);
+
 
 		g.drawImage(backBuffer, insets.left, insets.top, this);
 	}
@@ -128,9 +135,9 @@ public class Main extends JFrame
 		for(int i = 0; i < arrayVerdier.length; i++)
 		{
 			if(i%2==0)
-				g.setColor(Color.BLACK);
+				g.setColor(colPair);
 			else
-				g.setColor(Color.CYAN);
+				g.setColor(colOdd);
 
 			int barHeight = arrayVerdier[i]*barHeightMultiplier;
 			int y = windowHeight - barHeight;
