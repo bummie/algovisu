@@ -9,7 +9,7 @@ import javax.swing.JFrame;
 public class Main extends JFrame
 {
 	private boolean isRunning = true;
-	private final int FRAMES_PER_SECOND = 100;
+	private final int FRAMES_PER_SECOND = 500;
 	private int windowWidth = 720;
 	private int windowHeight = 480;
 	private long time;
@@ -20,9 +20,7 @@ public class Main extends JFrame
 	private Color colPair = new Color(22, 160, 133);
 	private Color colOdd = new Color(44, 62, 80);
 
-
-
-	private final int ARRAY_SIZE = 150;
+	private final int ARRAY_SIZE = 300;
 	private int arrayPos = 0, lastSortedOrigin = 0;
 	private boolean swappedInt = true, isSorted = false;
 	private int[] arrayVerdier;
@@ -88,7 +86,7 @@ public class Main extends JFrame
 			if(arrayPos >= arrayVerdier.length-1)
 			{
 				arrayPos = 0;
-				if(swappedInt = false)
+				if(swappedInt == false)
 					isSorted = true;
 				swappedInt = false;
 			}
@@ -134,18 +132,21 @@ public class Main extends JFrame
 		int barHeightMultiplier = (windowHeight/arrayVerdier.length);
 		for(int i = 0; i < arrayVerdier.length; i++)
 		{
-			if(i%2==0)
-				g.setColor(colPair);
-			else
+			if(i%2==0 && !isSorted)
 				g.setColor(colOdd);
+			else
+				g.setColor(colPair);
 
 			int barHeight = arrayVerdier[i]*barHeightMultiplier;
 			int y = windowHeight - barHeight;
 			g.fillRect(i*barWidth, y, barWidth, barHeight);
 		}
 
-		g.setColor(Color.RED);
-		g.fillRect(arrayPos*barWidth, 0, barWidth, windowHeight);
+		if(!isSorted)
+		{
+			g.setColor(Color.RED);
+			g.fillRect(arrayPos*barWidth, 0, barWidth, windowHeight);
+		}
 	}
 
 	private void hentTilfeldigeArrayVerdier(int size)
