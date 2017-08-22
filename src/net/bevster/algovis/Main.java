@@ -52,7 +52,7 @@ public class Main extends JFrame
 		setSize(insets.left + windowWidth + insets.right,
 				insets.top + windowHeight + insets.bottom);
 
-		backBuffer = new BufferedImage(windowWidth, windowHeight,   BufferedImage.TYPE_INT_RGB);
+		backBuffer = new BufferedImage(windowWidth, windowHeight, BufferedImage.TYPE_INT_RGB);
 	}
 
 	private void  run()
@@ -81,26 +81,8 @@ public class Main extends JFrame
 
 	private void update()
 	{
-		if(!isSorted)
-		{
-			if(arrayPos >= arrayVerdier.length-1)
-			{
-				arrayPos = 0;
-				if(swappedInt == false)
-					isSorted = true;
-				swappedInt = false;
-			}
-
-			if(arrayVerdier[arrayPos] > arrayVerdier[arrayPos+1])
-			{
-				int buffer = arrayVerdier[arrayPos];
-				arrayVerdier[arrayPos] = arrayVerdier[arrayPos+1];
-				arrayVerdier[arrayPos+1] = buffer;
-				swappedInt = true;
-				statSwaps++;
-			}
-			arrayPos++;
-		}
+		bubbleSort();
+		//quickSort();
 	}
 
 	private void draw()
@@ -132,7 +114,7 @@ public class Main extends JFrame
 		int barHeightMultiplier = (windowHeight/arrayVerdier.length);
 		for(int i = 0; i < arrayVerdier.length; i++)
 		{
-			if(i%2==0 && !isSorted)
+			if(arrayVerdier[i]%2==0 && !isSorted)
 				g.setColor(colOdd);
 			else
 				g.setColor(colPair);
@@ -154,7 +136,56 @@ public class Main extends JFrame
 		arrayVerdier = new int[size];
 		for(int i = 0; i < size; i++)
 		{
-			arrayVerdier[i] = new Random().nextInt(size);
+			arrayVerdier[i] = i;
 		}
+		shuffleArray(arrayVerdier);
+	}
+
+
+	// Fisher-Yates shuffle
+	// https://stackoverflow.com/a/1520212/6826158
+	static void shuffleArray(int[] ar)
+	{
+		// If running on Java 6 or older, use `new Random()` on RHS here
+		Random rnd = new Random();
+		for (int i = ar.length - 1; i > 0; i--)
+		{
+			int index = rnd.nextInt(i + 1);
+			// Simple swap
+			int a = ar[index];
+			ar[index] = ar[i];
+			ar[i] = a;
+		}
+	}
+
+	// Sorteringsalgoritmer
+
+	private void bubbleSort()
+	{
+		if(!isSorted)
+		{
+			if(arrayPos >= arrayVerdier.length-1)
+			{
+				arrayPos = 0;
+				if(swappedInt == false)
+					isSorted = true;
+				swappedInt = false;
+			}
+
+			if(arrayVerdier[arrayPos] > arrayVerdier[arrayPos+1])
+			{
+				int buffer = arrayVerdier[arrayPos];
+				arrayVerdier[arrayPos] = arrayVerdier[arrayPos+1];
+				arrayVerdier[arrayPos+1] = buffer;
+				swappedInt = true;
+				statSwaps++;
+			}
+			arrayPos++;
+		}
+	}
+
+	private void quickSort()
+	{
+
 	}
 }
