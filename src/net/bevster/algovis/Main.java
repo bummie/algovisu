@@ -1,6 +1,7 @@
 package net.bevster.algovis;
 
 import java.awt.*;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.Random;
 import javax.swing.JFrame;
@@ -9,7 +10,7 @@ import javax.swing.JFrame;
 public class Main extends JFrame
 {
 	private boolean isRunning = true;
-	private final int FRAMES_PER_SECOND = 500;
+	private final int FRAMES_PER_SECOND = 60;
 	private int windowWidth = 720;
 	private int windowHeight = 480;
 	private long time;
@@ -20,8 +21,8 @@ public class Main extends JFrame
 	private Color colPair = new Color(22, 160, 133);
 	private Color colOdd = new Color(44, 62, 80);
 
-	private final int ARRAY_SIZE = 300;
-	private int arrayPos = 0, lastSortedOrigin = 0;
+	private final int ARRAY_SIZE = 250;
+	private int arrayPos = 0;
 	private boolean swappedInt = true, isSorted = false;
 	private int[] arrayVerdier;
 
@@ -89,7 +90,7 @@ public class Main extends JFrame
 	{
 		Graphics g = getGraphics();
 
-		Graphics bbg = backBuffer.getGraphics();
+		Graphics2D bbg = (Graphics2D)backBuffer.getGraphics();
 
 		bbg.setColor(colBG);
 		bbg.fillRect(0, 0, windowWidth, windowHeight);
@@ -107,11 +108,12 @@ public class Main extends JFrame
 		g.drawImage(backBuffer, insets.left, insets.top, this);
 	}
 
-	private void drawGraphs(Graphics g)
+	private void drawGraphs(Graphics2D g)
 	{
+		float barWidth = (float)windowWidth / (float)arrayVerdier.length;
+		float barHeightMultiplier = ((float)windowHeight/(float)arrayVerdier.length);
 
-		int barWidth = windowWidth / arrayVerdier.length;
-		int barHeightMultiplier = (windowHeight/arrayVerdier.length);
+		System.out.println(barWidth + "");
 		for(int i = 0; i < arrayVerdier.length; i++)
 		{
 			if(arrayVerdier[i]%2==0 && !isSorted)
@@ -119,15 +121,17 @@ public class Main extends JFrame
 			else
 				g.setColor(colPair);
 
-			int barHeight = arrayVerdier[i]*barHeightMultiplier;
-			int y = windowHeight - barHeight;
-			g.fillRect(i*barWidth, y, barWidth, barHeight);
+			float barHeight = arrayVerdier[i]*barHeightMultiplier;
+			float y = windowHeight - barHeight;
+			//g.fillRect(i*barWidth, y, barWidth, barHeight);
+			g.fill(new Rectangle2D.Float(i*barWidth, y, barWidth, barHeight));
 		}
 
 		if(!isSorted)
 		{
 			g.setColor(Color.RED);
-			g.fillRect(arrayPos*barWidth, 0, barWidth, windowHeight);
+			g.fill(new Rectangle2D.Float(arrayPos*barWidth, 0, barWidth, windowHeight));
+
 		}
 	}
 
