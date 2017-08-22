@@ -113,7 +113,12 @@ public class Main extends JFrame
 		float barWidth = (float)windowWidth / (float)arrayVerdier.length;
 		float barHeightMultiplier = ((float)windowHeight/(float)arrayVerdier.length);
 
-		System.out.println(barWidth + "");
+		if(!isSorted)
+		{
+			g.setColor(Color.RED);
+			g.fill(new Rectangle2D.Float(arrayPos*barWidth, 0, barWidth, windowHeight));
+
+		}
 		for(int i = 0; i < arrayVerdier.length; i++)
 		{
 			if(arrayVerdier[i]%2==0 && !isSorted)
@@ -125,13 +130,6 @@ public class Main extends JFrame
 			float y = windowHeight - barHeight;
 			//g.fillRect(i*barWidth, y, barWidth, barHeight);
 			g.fill(new Rectangle2D.Float(i*barWidth, y, barWidth, barHeight));
-		}
-
-		if(!isSorted)
-		{
-			g.setColor(Color.RED);
-			g.fill(new Rectangle2D.Float(arrayPos*barWidth, 0, barWidth, windowHeight));
-
 		}
 	}
 
